@@ -1,0 +1,3 @@
+export const SIGNIN_REQUEST  = 'SIGNIN_REQUEST';
+export const SIGNIN_RESOLVE  = 'SIGNIN_REJECT';
+export const SIGNIN_REJECT   = 'SIGNIN_REJECT';
