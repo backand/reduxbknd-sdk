@@ -103,7 +103,7 @@ export const get_${name} = (params) => {
     dispatch({
       type: ${upname}_REQUEST,
     })
-    backand.service.getItems('${name}', params,
+    backand.service.getList('${name}', params,
       response => {
         dispatch({
           type: ${upname}_RESOLVE,
@@ -125,7 +125,7 @@ export const get_${name} = (params) => {
 
 export const add_${name} = (data, params) => {
   return dispatch => {
-    backand.service.postItem('${name}', data, Object.assign(params, {returnObject: true}),
+    backand.service.create('${name}', data, Object.assign(params, {returnObject: true}),
       response => {
         dispatch({
           type: ADD_${upname}_RESOLVE,
@@ -147,7 +147,7 @@ export const add_${name} = (data, params) => {
 
 export const update_${name} = (id, data, params) => {
   return dispatch => {
-    backand.service.updateItem('${name}', id, data, Object.assign(params, {returnObject: true}),
+    backand.service.update('${name}', id, data, Object.assign(params, {returnObject: true}),
       response => {
         dispatch({
           type: UPDATE_${upname}_RESOLVE,
@@ -169,7 +169,7 @@ export const update_${name} = (id, data, params) => {
 
 export const delete_${name} = (id) => {
   return dispatch => {
-    backand.service.deleteItem('${name}', id,
+    backand.service.delete('${name}', id,
       response => {
         dispatch({
           type: DELETE_${upname}_RESOLVE,
