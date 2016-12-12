@@ -2,12 +2,12 @@
 const TODOS_REQUEST = 'TODOS_REQUEST';
 const TODOS_RESOLVE = 'TODOS_RESOLVE';
 const TODOS_REJECT  = 'TODOS_REJECT';
-const ADD_TODOS_RESOLVE = 'ADD_TODOS_RESOLVE';
-const ADD_TODOS_REJECT  = 'ADD_TODOS_REJECT';
+const CREATE_TODOS_RESOLVE = 'CREATE_TODOS_RESOLVE';
+const CREATE_TODOS_REJECT  = 'CREATE_TODOS_REJECT';
 const UPDATE_TODOS_RESOLVE = 'UPDATE_TODOS_RESOLVE';
 const UPDATE_TODOS_REJECT  = 'UPDATE_TODOS_REJECT';
-const DELETE_TODOS_RESOLVE = 'DELETE_TODOS_RESOLVE';
-const DELETE_TODOS_REJECT  = 'DELETE_TODOS_REJECT';
+const REMOVE_TODOS_RESOLVE = 'REMOVE_TODOS_RESOLVE';
+const REMOVE_TODOS_REJECT  = 'REMOVE_TODOS_REJECT';
 
 const get_todos = (params = {}) => {
   return dispatch => {
@@ -33,20 +33,22 @@ const get_todos = (params = {}) => {
       });
   };
 }
-const add_todos = (data, params = {}) => {
+const create_todos = (data, params = {}) => {
   return dispatch => {
-    backand.service.create('todos', data, Object.assign({}, params, {returnObject: true}),
+    backand.service.create('todos', data, params,
       response => {
-        dispatch({
-          type: ADD_TODOS_RESOLVE,
-          payload: {
-            data: response.data
-          }
-        });
+        // SUCCESS CALLBACK: Write your code here!
+        // Use the following type, and payload structure in case of using dispatch():
+        // dispatch({
+        //   type: CREATE_TODOS_RESOLVE,
+        //   payload: {
+        //     data: DATA_TO_REDUCER
+        //   }
+        // });
       },
       error => {
         dispatch({
-          type: ADD_TODOS_REJECT,
+          type: CREATE_TODOS_REJECT,
           payload: {
             error: error.data
           }
@@ -56,14 +58,16 @@ const add_todos = (data, params = {}) => {
 }
 const update_todos = (id, data, params = {}) => {
   return dispatch => {
-    backand.service.update('todos', id, data, Object.assign({}, params, {returnObject: true}),
+    backand.service.update('todos', id, data, params,
       response => {
-        dispatch({
-          type: UPDATE_TODOS_RESOLVE,
-          payload: {
-            data: response.data
-          }
-        });
+        // SUCCESS CALLBACK: Write your code here!
+        // Use the following type, and payload structure in case of using dispatch():
+        // dispatch({
+        //   type: UPDATE_TODOS_RESOLVE,
+        //   payload: {
+        //     data: DATA_TO_REDUCER
+        //   }
+        // });
       },
       error => {
         dispatch({
@@ -79,18 +83,18 @@ const remove_todos = (id) => {
   return dispatch => {
     backand.service.remove('todos', id,
       response => {
-        dispatch({
-          type: DELETE_TODOS_RESOLVE,
-          payload: {
-            data: {
-      			  id
-      			}
-          }
-        });
+        // SUCCESS CALLBACK: Write your code here!
+        // Use the following type, and payload structure in case of using dispatch():
+        // dispatch({
+        //   type: REMOVE_TODOS_RESOLVE,
+        //   payload: {
+        //     data: DATA_TO_REDUCER
+        //   }
+        // });
       },
       error => {
         dispatch({
-          type: DELETE_TODOS_REJECT,
+          type: REMOVE_TODOS_REJECT,
           payload: {
             error: error.data
           }
@@ -115,28 +119,37 @@ const todos = (state = {}, action) => {
         error: action.payload.error,
         loaded: false
       });
-    case ADD_TODOS_RESOLVE:
-        return Object.assign({}, state, {
-          data: [action.payload.data, ...state.data]
-        });
-  	case ADD_TODOS_REJECT:
-        return Object.assign({}, state, {
-          error: action.payload.error
-        });
+    case CREATE_TODOS_RESOLVE:
+      // Write your code here!
+      // Use action.payload to access data
+      // EXAMPLE:
+      // return Object.assign({}, state, {
+      //   data: [action.payload.data, ...state.data]
+      // });
+  	case CREATE_TODOS_REJECT:
+      return Object.assign({}, state, {
+        error: action.payload.error
+      });
   	case UPDATE_TODOS_RESOLVE:
-        return Object.assign({}, state, {
-          data: [action.payload.data, ...state.data]
-        });
+      // Write your code here!
+      // Use action.payload to access data
+      // EXAMPLE:
+      // return Object.assign({}, state, {
+      //   data: [action.payload.data, ...state.data]
+      // });
   	case UPDATE_TODOS_REJECT:
-        return Object.assign({}, state, {
-          error: action.payload.error
-        });
-  	case DELETE_TODOS_RESOLVE:
-  	    let newData = state.data.filter(item => item.id != action.payload.data.id);
-        return Object.assign({}, state, {
-          data: newData
-        });
-  	case DELETE_TODOS_REJECT:
+      return Object.assign({}, state, {
+        error: action.payload.error
+      });
+  	case REMOVE_TODOS_RESOLVE:
+      // Write your code here!
+      // Use action.payload to access data
+      // EXAMPLE:
+	    // let newData = state.data.filter(item => item.id != action.payload.data.id);
+      // return Object.assign({}, state, {
+      //   data: newData
+      // });
+  	case REMOVE_TODOS_REJECT:
         return Object.assign({}, state, {
           error: action.payload.error
         });
@@ -193,8 +206,8 @@ const signup = (email, password, confirmPassword, firstName, lastName) => {
   };
 }
 const socialSignin = (provider) => {
-   alert('Due to permission settings in codepen - you need to close the social dialog manully. In your app it will be closed automatictlly');
   return dispatch => {
+    alert('Due to permission settings in codepen - you need to close the social dialog manully. In your app it will be closed automatictlly');
     dispatch(request())
     backand.service.socialSignin(provider,
       response => {
@@ -306,7 +319,6 @@ const UserComponent = ({user, signout}) => {
   );
 }
 
-
 class SigninModal extends React.Component {
   constructor(props){
     super(props);
@@ -416,13 +428,33 @@ const TodoFormComponent = ({addTodo, user}) => {
   );
 };
 
-const TodoComponent = ({todo, remove}) => {
-  return (<a href="#" className="list-group-item" onClick={() => {remove(todo.id)}}>{todo.text}</a>);
+const TodoComponent = ({todo, update, remove}) => {
+  return (
+    <a href="#" className="list-group-item" onClick={() => {
+      update(todo.id, Object.assign({}, todo, {
+        completionDate: todo.completionDate ? null : (new Date()).toISOString()}))
+    }}>
+      <div className="row">
+        <div className="col-xs-8">
+            {todo.text}
+        </div>
+        <div className="col-xs-2">
+          {todo.completionDate && (
+            <img style={{height: '20px'}} src='http://www.financialripple.com/images/green_check.png'/>)}
+        </div>
+        <div className="col-xs-2">
+          <button type="button" className="btn btn-danger" aria-label="remove" id="remove" onClick={() => {remove(todo.id)}}>
+            <span className="glyphicon glyphicon-remove" aria-hidden="true"/>
+          </button>
+        </div>
+      </div>
+    </a>
+  );
 }
 
-const TodoListComponent = ({todos, remove}) => {
+const TodoListComponent = ({todos, update, remove}) => {
   const toRender = todos && todos.map(todo => {
-    return (<TodoComponent todo={todo} key={todo.id} remove={remove}/>)
+    return (<TodoComponent todo={todo} key={todo.id} update={update} remove={remove}/>)
   });
   return (
     <div className="col-xs-12" style={{height: '100%'}}>
@@ -439,20 +471,29 @@ class TodoApp extends React.Component{
     this.state = {lastUsername: ''};
   }
   componentWillMount() {
-    backand.initiate({appName: 'reactnativetodoexample', signUpToken: '4c128c04-7193-4eb1-8f19-2b742a2a7bba', anonymousToken: '2214c4be-d1b1-4023-bdfd-0d83adab8235', runSocket: false});
+    backand.initiate({
+      appName: 'reactnativetodoexample',
+      signUpToken: '4c128c04-7193-4eb1-8f19-2b742a2a7bba',
+      anonymousToken: '2214c4be-d1b1-4023-bdfd-0d83adab8235',
+      runSocket: true
+    });
   }
   componentDidMount() {
-    this.props.getUserDetails();
+    const { props: { getUserDetails, fetchTodos } } = this
+    getUserDetails();
+    backand.socket.on('update_todos', (data) => {
+      fetchTodos();
+    });
   }
   componentWillReceiveProps(nextProps) {
     const { user, fetchTodos } = nextProps
     if (user.loaded && user.data.username != this.state.lastUsername) {
       this.setState({lastUsername: user.data.username});
-      fetchTodos(user.data.userId)
+      fetchTodos();
     }
   }
   render(){
-    const { props: { todos, user, fetchTodos, addTodo, removeTodo, signin, signout } } = this
+    const { props: { todos, user, fetchTodos, addTodo, updateTodo, removeTodo, signin, signout } } = this
     return (
 			<div>
         <div className="container" style={{position: 'fixed', top: 70, left: 0, right: 0, bottom: 0}}>
@@ -466,7 +507,7 @@ class TodoApp extends React.Component{
    				</div>
           {user.loaded && (<div className="row" style={{position: 'absolute', top: 110, left: 0, right: 0, bottom: 10}}>
             {todos.loading && <img style={{height: '50px'}} src='http://envyus.com.au/themes/envyus/images/ajax-loader.gif'/>}
-            {todos.loaded && <TodoListComponent todos={todos.data} remove={removeTodo}/>}
+            {todos.loaded && <TodoListComponent todos={todos.data} update={updateTodo} remove={removeTodo}/>}
    				</div>)}
         </div>
 				<SigninModal signin={signin}/>
@@ -483,20 +524,31 @@ const mapStateToProps = state => {
   }
 }
 
+function fetchTodos() {
+  return (dispatch, getState) => {
+    const { user } = getState();
+    let params = {
+      sort: backand.helpers.sort.create('creationDate', backand.helpers.sort.orders.desc),
+      exclude: backand.helpers.exclude.options.all,
+      pageSize: 1000000,
+      pageNumber: 1,
+    }
+    if(user.data.userId) {
+      params.filter = backand.helpers.filter.create('user', backand.helpers.filter.operators.relation.in, user.data.userId);
+    }
+    dispatch(get_todos(params));
+  };
+}
 const mapDispatchToProps = dispatch => {
   return {
-    fetchTodos: (userId) => {
-      let params = {
-        sort: backand.helpers.sort.create('creationDate', backand.helpers.sort.orders.desc),
-        exclude: backand.helpers.exclude.options.all,
-        pageSize: 1000000,
-        pageNumber: 1,
-      }
-      if(userId) {params.filter = backand.helpers.filter.create('user', backand.helpers.filter.operators.relation.in, userId);}
-      dispatch(get_todos(params));
+    fetchTodos: () => {
+      dispatch(fetchTodos())
     },
     addTodo: (data) => {
-      dispatch(add_todos(data))
+      dispatch(create_todos(data))
+    },
+    updateTodo: (id, data) => {
+      dispatch(update_todos(id, data))
     },
     removeTodo: (id) => {
       dispatch(remove_todos(id))
@@ -521,8 +573,6 @@ const mapDispatchToProps = dispatch => {
     }
   }
 }
-
-
 
 let TodoAppContainer = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(TodoApp)
 
