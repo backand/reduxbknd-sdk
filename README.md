@@ -49,8 +49,8 @@ store.dispatch(getUserDetails())
 
 
 ## Examples
-- [codepen example](http://codepen.io/rannn505/pen/JbLEKV).
-- [react-native-example](https://github.com/backand/react-native-example/tree/sdk).
+- [codepen example](http://codepen.io/rannn505/pen/JbLEKV)
+- [react-native-example](https://github.com/backand/react-native-example/tree/sdk)
 
 
 ## License
