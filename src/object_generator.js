@@ -1,21 +1,75 @@
 const fs = require('fs');
 const os = require('os');
 
-process.argv.slice(2).forEach(name => {
+var params  = process.argv.slice(2);
+var mode    = 'ins';
+var index   = './../index.js';
 
-  var dir = name;
-  var types = `./${name}/${name}Types.js`;
-  var reducer = `./${name}/${name}Reducer.js`;
-  var actions = `./${name}/${name}Actions.js`
+if (params.indexOf('mode=del') !== -1) {
+  mode = 'del';
+  params.splice(params.indexOf('mode=del'), 1);
+}
+if (params.indexOf('mode=ins') !== -1) {
+  mode = 'ins';
+  params.splice(params.indexOf('mode=ins'), 1);
+}
+console.log('mode: ' + mode);
+console.log(params);
+if (params.indexOf('auth') !== -1) {
+  console.log('auth can not modified');
+  params.splice(params.indexOf('auth'), 1);
+}
 
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-  if (!fs.existsSync(types)) fs.writeFileSync(types, type_gen(name))
-  if (!fs.existsSync(reducer)) fs.writeFileSync(reducer, reducer_gen(name))
-  if (!fs.existsSync(actions)) fs.writeFileSync(actions, actions_gen(name))
+if (mode === 'del') {
+  params.forEach(name => {
+
+    var dir = name;
+    var types   = `${dir}/${name}Types.js`;
+    var reducer = `${dir}/${name}Reducer.js`;
+    var actions = `${dir}/${name}Actions.js`;
+
+    if (fs.readFileSync(index).toString().indexOf(`${name}Actions`) === -1) {
+      console.log(`Object ${name} not exists`)
+    }
+    else {
+      if (fs.existsSync(types)) fs.unlinkSync(types);
+      if (fs.existsSync(reducer)) fs.unlinkSync(reducer);
+      if (fs.existsSync(actions)) fs.unlinkSync(actions);
+      fs.rmdirSync(dir);
+      var indexTxt = fs.readFileSync(index).toString().split(os.EOL);
+      indexTxt.splice(indexTxt.indexOf(`export * from './src/${dir}/${name}Actions'`), 2);
+
+      fs.writeFileSync(index, '');
+      fs.writeFileSync(index, indexTxt.join(os.EOL));
+      console.log(`Object ${name} has been deleted`);
+    }
+  })
+  return;
+}
+
+params.forEach(name => {
+
+  var dir     = name;
+  var types   = `${dir}/${name}Types.js`;
+  var reducer = `${dir}/${name}Reducer.js`;
+  var actions = `${dir}/${name}Actions.js`;
+
+  if (fs.readFileSync(index).toString().indexOf(`${name}Actions`) !== -1) {
+    console.log(`Object ${name} already exists`);
+  }
+  else {
+    fs.mkdirSync(dir);
+    fs.writeFileSync(types, types_gen(name));
+    fs.writeFileSync(reducer, reducer_gen(name));
+    fs.writeFileSync(actions, actions_gen(name));
+    fs.appendFileSync(index, `${os.EOL}export * from './src/${dir}/${name}Actions'`);
+    fs.appendFileSync(index, `${os.EOL}export ${name}Reducer from './src/${dir}/${name}Reducer'`);
+    console.log(`Object ${name} has been created`);
+  }
 
 });
 
-function type_gen (name) {
+function types_gen (name) {
   var upname = name.toUpperCase();
   return (
     `export const ${upname}_REQUEST = '${upname}_REQUEST';
@@ -39,7 +93,7 @@ function reducer_gen (name) {
     `import { ${upname}_REQUEST, ${upname}_RESOLVE, ${upname}_REJECT,
   CREATE_${upname}_RESOLVE, CREATE_${upname}_REJECT,
   UPDATE_${upname}_RESOLVE, UPDATE_${upname}_REJECT,
-  REMOVE_${upname}_RESOLVE, REMOVE_${upname}_REJECT } from './${name}Types';
+  REMOVE_${upname}_RESOLVE, REMOVE_${upname}_REJECT } from './${name}Types'
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -105,8 +159,12 @@ function actions_gen (name) {
     `import { ${upname}_REQUEST, ${upname}_RESOLVE, ${upname}_REJECT,
   CREATE_${upname}_RESOLVE, CREATE_${upname}_REJECT,
   UPDATE_${upname}_RESOLVE, UPDATE_${upname}_REJECT,
-  REMOVE_${upname}_RESOLVE, REMOVE_${upname}_REJECT } from './${name}Types';
+  REMOVE_${upname}_RESOLVE, REMOVE_${upname}_REJECT } from './${name}Types'
+import backand from 'vanillabknd-sdk'
 
+// add custom actions here!
+
+// generated actions
 export const get_${name} = (params = {}) => {
   return dispatch => {
     dispatch({

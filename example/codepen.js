@@ -1,3 +1,5 @@
+// http://codepen.io/rannn505/pen/JbLEKV
+
 // Redux todo
 const TODOS_REQUEST = 'TODOS_REQUEST';
 const TODOS_RESOLVE = 'TODOS_RESOLVE';
@@ -164,27 +166,51 @@ const SIGNIN_RESOLVE = 'SIGNIN_RESOLVE';
 const SIGNIN_REJECT  = 'SIGNIN_REJECT';
 const SIGNOUT        = 'SIGNOUT';
 
-const getUserDetails = () => {
+const getUserDetails = (force) => {
   return dispatch => {
     backand.service.getUserDetails(response => {
       dispatch(resolve(response.data));
     },
     error => {
       dispatch(reject(error.data));
-    });
+    }, force);
   };
 }
 const useAnonymousAuth = () => {
   return dispatch => {
     backand.service.useAnonymousAuth(response => {
       dispatch(resolve(response.data));
-    })
-  }
+    });
+  };
 }
 const signin = (username, password) => {
   return dispatch => {
     dispatch(request())
     backand.service.signin(username, password,
+      response => {
+        dispatch(resolve(response.data));
+      },
+      error => {
+        dispatch(reject(error.data));
+      });
+  };
+}
+const socialSignin = (provider) => {
+  return dispatch => {
+    dispatch(request())
+    backand.service.socialSignin(provider,
+      response => {
+        dispatch(resolve(response.data));
+      },
+      error => {
+        dispatch(reject(error.data));
+      });
+  };
+}
+const socialSigninWithToken = (provider, token) => {
+  return dispatch => {
+    dispatch(request())
+    backand.service.socialSigninWithToken(provider, token,
       response => {
         dispatch(resolve(response.data));
       },
@@ -203,19 +229,6 @@ const signup = (email, password, confirmPassword, firstName, lastName) => {
       error => {
         dispatch(reject(error.data));
       });
-  };
-}
-const socialSignin = (provider) => {
-  return dispatch => {
-    alert('Due to permission settings in codepen - you need to close the social dialog manully. In your app it will be closed automatictlly');
-    dispatch(request())
-    backand.service.socialSignin(provider,
-      response => {
-        dispatch(resolve(response.data));
-      },
-      error => {
-        dispatch(reject(error.data));
-      }, 'left=1, top=1, width=300, height=300');
   };
 }
 const signout = () => {
@@ -471,7 +484,7 @@ class TodoApp extends React.Component{
     this.state = {lastUsername: ''};
   }
   componentWillMount() {
-    backand.initiate({
+    backand.initiate && backand.initiate({
       appName: 'reactnativetodoexample',
       signUpToken: '4c128c04-7193-4eb1-8f19-2b742a2a7bba',
       anonymousToken: '2214c4be-d1b1-4023-bdfd-0d83adab8235',
@@ -528,13 +541,13 @@ function fetchTodos() {
   return (dispatch, getState) => {
     const { user } = getState();
     let params = {
-      sort: backand.helpers.sort.create('creationDate', backand.helpers.sort.orders.desc),
+      sort: [backand.helpers.sort.create('creationDate', backand.helpers.sort.orders.desc)],
       exclude: backand.helpers.exclude.options.all,
       pageSize: 1000000,
       pageNumber: 1,
     }
     if(user.data.userId) {
-      params.filter = backand.helpers.filter.create('user', backand.helpers.filter.operators.relation.in, user.data.userId);
+      params.filter = [backand.helpers.filter.create('user', backand.helpers.filter.operators.relation.in, user.data.userId)];
     }
     dispatch(get_todos(params));
   };

@@ -1,0 +1,27 @@
+{
+  "name": "reduxbknd-sdk",
+  "version": "1.0.0",
+  "description": "Backand SDK for Redux",
+  "main": "index.js",
+  "files": [
+    "src",
+    "example"
+  ],
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "generate": "cd ./src && node object_generator.js"
+  },
+  "author": "Backand",
+  "license": "MIT",
+  "dependencies": {
+    "vanillabknd-sdk": "^1.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/backand/reduxbknd-sdk.git"
+  },
+  "homepage": "https://github.com/backand/reduxbknd-sdk#readme"
+}

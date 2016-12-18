@@ -1,13 +1,15 @@
-import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './authTypes';
+import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './authTypes'
+import backand from 'vanillabknd-sdk'
 
-export const getUserDetails = () => {
+export const getUserDetails = (force) => {
   return dispatch => {
+    dispatch(request());
     backand.service.getUserDetails(response => {
       dispatch(resolve(response.data));
     },
     error => {
       dispatch(reject(error.data));
-    });
+    }, force);
   };
 }
 
@@ -19,9 +21,9 @@ export const useAnonymousAuth = () => {
   };
 }
 
-export const signin = ({username, password}) => {
+export const signin = (username, password) => {
   return dispatch => {
-    dispatch(request())
+    dispatch(request());
     backand.service.signin(username, password,
       response => {
         dispatch(resolve(response.data));
@@ -34,7 +36,7 @@ export const signin = ({username, password}) => {
 
 export const socialSignin = (provider) => {
   return dispatch => {
-    dispatch(request())
+    dispatch(request());
     backand.service.socialSignin(provider,
       response => {
         dispatch(resolve(response.data));
@@ -45,9 +47,22 @@ export const socialSignin = (provider) => {
   };
 }
 
-export const signup = ({email, password, confirmPassword, firstName, lastName}) => {
+export const socialSigninWithToken = (provider, token) => {
   return dispatch => {
-    dispatch(request())
+    dispatch(request());
+    backand.service.socialSigninWithToken(provider, token,
+      response => {
+        dispatch(resolve(response.data));
+      },
+      error => {
+        dispatch(reject(error.data));
+      });
+  };
+}
+
+export const signup = (email, password, confirmPassword, firstName, lastName) => {
+  return dispatch => {
+    dispatch(request());
     backand.service.signup(email, password, confirmPassword, firstName, lastName,
       response => {
         dispatch(resolve(response.data));

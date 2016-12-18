@@ -1,4 +1,4 @@
-import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT } from './authTypes';
+import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './authTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {
