@@ -3,7 +3,7 @@ reduxbknd-sdk
 [![npm version](https://img.shields.io/npm/v/reduxbknd-sdk.svg?style=flat-square)](https://www.npmjs.org/package/reduxbknd-sdk)
 [![npm downloads](https://img.shields.io/npm/dt/reduxbknd-sdk.svg?style=flat-square)](http://npm-stat.com/charts.html?package=reduxbknd-sdk)
 
->  Backand SDK for [Redux](http://redux.js.org/)
+>  Backand SDK for [Redux](http://redux.js.org/).
 This SDK enables you to communicate comfortably and quickly with your Backand app.
 It wraps the [vanillabknd-sdk](https://github.com/backand/vanillabknd-sdk) to allow easier work on projects involving Redux.
 
