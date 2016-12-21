@@ -20,7 +20,7 @@ import thunk from 'redux-thunk'
 
 createStore(rootReducer, initialState, applyMiddleware(thunk))
 ```
-- Use `object_generator.js` to generate `Types`,`Actions`,`Reducers` for your Backand objects:
+- Use `npm run generate OBJ` to generate `Types`,`Actions`,`Reducers` for your Backand objects:
 ```bash
 $ cd ./node_modules/reduxbknd-sdk/
 $ npm run generate obj1 obj2 obj3... (CREATE OBJECTS)

@@ -60,10 +60,10 @@ export const socialSigninWithToken = (provider, token) => {
   };
 }
 
-export const signup = (email, password, confirmPassword, firstName, lastName) => {
+export const signup = (email, password, confirmPassword, firstName, lastName, parameters) => {
   return dispatch => {
     dispatch(request());
-    backand.service.signup(email, password, confirmPassword, firstName, lastName,
+    backand.service.signup(email, password, confirmPassword, firstName, lastName, parameters,
       response => {
         dispatch(resolve(response.data));
       },

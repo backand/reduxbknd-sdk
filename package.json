@@ -1,6 +1,6 @@
 {
   "name": "reduxbknd-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backand SDK for Redux",
   "main": "index.js",
   "files": [
@@ -16,7 +16,7 @@
   "author": "Backand",
   "license": "MIT",
   "dependencies": {
-    "vanillabknd-sdk": "^1.0.0"
+    "vanillabknd-sdk": "^1.0.1"
   },
   "devDependencies": {},
   "repository": {
