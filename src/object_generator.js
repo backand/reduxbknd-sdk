@@ -63,7 +63,7 @@ params.forEach(name => {
     fs.writeFileSync(reducer, reducer_gen(name));
     fs.writeFileSync(actions, actions_gen(name));
     fs.appendFileSync(index, `${os.EOL}export * from './src/${dir}/${name}Actions'`);
-    fs.appendFileSync(index, `${os.EOL}export ${name}Reducer from './src/${dir}/${name}Reducer'`);
+    fs.appendFileSync(index, `${os.EOL}export { default as ${name} } from './src/${dir}/${name}Reducer'`);
     console.log(`Object ${name} has been created`);
   }
 

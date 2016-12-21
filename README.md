@@ -29,9 +29,9 @@ $ npm run generate mode=del obj1 obj2 obj3... (DELETE OBJECTS)
 - Include `Reducers` in [combineReducers()](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 import { combineReducers } from 'redux'
-import user from './node_modules/reduxbknd-sdk/auth/authReducer'
-import obj1 from './node_modules/reduxbknd-sdk/obj1/obj1Reducer'
-import obj2 from './node_modules/reduxbknd-sdk/obj2/obj2Reducer'
+import user from './node_modules/reduxbknd-sdk/src/auth/authReducer'
+import obj1 from './node_modules/reduxbknd-sdk/src/obj1/obj1Reducer'
+import obj2 from './node_modules/reduxbknd-sdk/src/obj2/obj2Reducer'
 
 combineReducers({
   user,
@@ -41,7 +41,7 @@ combineReducers({
 ```
 - Import `Actions` and dispatch them happily! :smile:
 ```javascript
-import { getUserDetails, signin, useAnonymousAuth, signout } from './node_modules/reduxbknd-sdk/auth/authActions'
+import { getUserDetails, signin, useAnonymousAuth, signout } from './node_modules/reduxbknd-sdk/src/auth/authActions'
 
 store.dispatch(signin(username, password))
 store.dispatch(getUserDetails())
