@@ -4,7 +4,7 @@ import backand from 'vanillabknd-sdk'
 export const getUserDetails = (force) => {
   return dispatch => {
     dispatch(request());
-    backand.service.getUserDetails(response => {
+    backand.getUserDetails(response => {
       dispatch(resolve(response.data));
     },
     error => {
@@ -15,7 +15,7 @@ export const getUserDetails = (force) => {
 
 export const useAnonymousAuth = () => {
   return dispatch => {
-    backand.service.useAnonymousAuth(response => {
+    backand.useAnonymousAuth(response => {
       dispatch(resolve(response.data));
     });
   };
@@ -24,7 +24,7 @@ export const useAnonymousAuth = () => {
 export const signin = (username, password) => {
   return dispatch => {
     dispatch(request());
-    backand.service.signin(username, password,
+    backand.signin(username, password,
       response => {
         dispatch(resolve(response.data));
       },
@@ -37,7 +37,7 @@ export const signin = (username, password) => {
 export const socialSignin = (provider) => {
   return dispatch => {
     dispatch(request());
-    backand.service.socialSignin(provider,
+    backand.socialSignin(provider,
       response => {
         dispatch(resolve(response.data));
       },
@@ -50,7 +50,7 @@ export const socialSignin = (provider) => {
 export const socialSigninWithToken = (provider, token) => {
   return dispatch => {
     dispatch(request());
-    backand.service.socialSigninWithToken(provider, token,
+    backand.socialSigninWithToken(provider, token,
       response => {
         dispatch(resolve(response.data));
       },
@@ -63,7 +63,7 @@ export const socialSigninWithToken = (provider, token) => {
 export const signup = (email, password, confirmPassword, firstName, lastName, parameters) => {
   return dispatch => {
     dispatch(request());
-    backand.service.signup(email, password, confirmPassword, firstName, lastName, parameters,
+    backand.signup(email, password, confirmPassword, firstName, lastName, parameters,
       response => {
         dispatch(resolve(response.data));
       },
@@ -75,7 +75,7 @@ export const signup = (email, password, confirmPassword, firstName, lastName, pa
 
 export const signout = () => {
   return dispatch => {
-    backand.service.signout(response => {
+    backand.signout(response => {
       dispatch({type: SIGNOUT});
     });
   };

@@ -170,7 +170,7 @@ export const get_${name} = (params = {}) => {
     dispatch({
       type: ${upname}_REQUEST,
     })
-    backand.service.getList('${name}', params,
+    backand.getList('${name}', params,
       response => {
         dispatch({
           type: ${upname}_RESOLVE,
@@ -192,7 +192,7 @@ export const get_${name} = (params = {}) => {
 
 export const create_${name} = (data, params = {}) => {
   return dispatch => {
-    backand.service.create('${name}', data, params,
+    backand.create('${name}', data, params,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():
@@ -216,7 +216,7 @@ export const create_${name} = (data, params = {}) => {
 
 export const update_${name} = (id, data, params = {}) => {
   return dispatch => {
-    backand.service.update('${name}', id, data, params,
+    backand.update('${name}', id, data, params,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():
@@ -240,7 +240,7 @@ export const update_${name} = (id, data, params = {}) => {
 
 export const remove_${name} = (id) => {
   return dispatch => {
-    backand.service.remove('${name}', id,
+    backand.remove('${name}', id,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():

@@ -16,7 +16,7 @@ const get_todos = (params = {}) => {
     dispatch({
       type: TODOS_REQUEST,
     })
-    backand.service.getList('todos', params,
+    backand.getList('todos', params,
       response => {
         dispatch({
           type: TODOS_RESOLVE,
@@ -37,7 +37,7 @@ const get_todos = (params = {}) => {
 }
 const create_todos = (data, params = {}) => {
   return dispatch => {
-    backand.service.create('todos', data, params,
+    backand.create('todos', data, params,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():
@@ -60,7 +60,7 @@ const create_todos = (data, params = {}) => {
 }
 const update_todos = (id, data, params = {}) => {
   return dispatch => {
-    backand.service.update('todos', id, data, params,
+    backand.update('todos', id, data, params,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():
@@ -83,7 +83,7 @@ const update_todos = (id, data, params = {}) => {
 }
 const remove_todos = (id) => {
   return dispatch => {
-    backand.service.remove('todos', id,
+    backand.remove('todos', id,
       response => {
         // SUCCESS CALLBACK: Write your code here!
         // Use the following type, and payload structure in case of using dispatch():
@@ -168,7 +168,7 @@ const SIGNOUT        = 'SIGNOUT';
 
 const getUserDetails = (force) => {
   return dispatch => {
-    backand.service.getUserDetails(response => {
+    backand.getUserDetails(response => {
       dispatch(resolve(response.data));
     },
     error => {
@@ -178,7 +178,7 @@ const getUserDetails = (force) => {
 }
 const useAnonymousAuth = () => {
   return dispatch => {
-    backand.service.useAnonymousAuth(response => {
+    backand.useAnonymousAuth(response => {
       dispatch(resolve(response.data));
     });
   };
@@ -186,7 +186,7 @@ const useAnonymousAuth = () => {
 const signin = (username, password) => {
   return dispatch => {
     dispatch(request())
-    backand.service.signin(username, password,
+    backand.signin(username, password,
       response => {
         dispatch(resolve(response.data));
       },
@@ -198,7 +198,7 @@ const signin = (username, password) => {
 const socialSignin = (provider) => {
   return dispatch => {
     dispatch(request())
-    backand.service.socialSignin(provider,
+    backand.socialSignin(provider,
       response => {
         dispatch(resolve(response.data));
       },
@@ -210,7 +210,7 @@ const socialSignin = (provider) => {
 const socialSigninWithToken = (provider, token) => {
   return dispatch => {
     dispatch(request())
-    backand.service.socialSigninWithToken(provider, token,
+    backand.socialSigninWithToken(provider, token,
       response => {
         dispatch(resolve(response.data));
       },
@@ -222,7 +222,7 @@ const socialSigninWithToken = (provider, token) => {
 const signup = (email, password, confirmPassword, firstName, lastName) => {
   return dispatch => {
     dispatch(request())
-    backand.service.signup(email, password, confirmPassword, firstName, lastName,
+    backand.signup(email, password, confirmPassword, firstName, lastName,
       response => {
         dispatch(resolve(response.data));
       },
@@ -233,7 +233,7 @@ const signup = (email, password, confirmPassword, firstName, lastName) => {
 }
 const signout = () => {
   return dispatch => {
-    backand.service.signout(response => {
+    backand.signout(response => {
       dispatch({type: SIGNOUT});
     });
   };
@@ -484,7 +484,7 @@ class TodoApp extends React.Component{
     this.state = {lastUsername: ''};
   }
   componentWillMount() {
-    backand.initiate && backand.initiate({
+    backand.init && backand.init({
       appName: 'reactnativetodoexample',
       signUpToken: '4c128c04-7193-4eb1-8f19-2b742a2a7bba',
       anonymousToken: '2214c4be-d1b1-4023-bdfd-0d83adab8235',
@@ -494,7 +494,7 @@ class TodoApp extends React.Component{
   componentDidMount() {
     const { props: { getUserDetails, fetchTodos } } = this
     getUserDetails();
-    backand.socket.on('update_todos', (data) => {
+    backand.on('update_todos', (data) => {
       fetchTodos();
     });
   }
