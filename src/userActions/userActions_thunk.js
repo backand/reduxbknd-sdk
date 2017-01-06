@@ -1,10 +1,10 @@
-import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './authTypes'
+import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './userTypes'
 import backand from 'vanillabknd-sdk'
 
 export const getUserDetails = (force) => {
   return dispatch => {
     dispatch(request());
-    backand.getUserDetails(response => {
+    backand.user.getUserDetails(response => {
       dispatch(resolve(response.data));
     },
     error => {
@@ -15,6 +15,7 @@ export const getUserDetails = (force) => {
 
 export const useAnonymousAuth = () => {
   return dispatch => {
+    dispatch(request());
     backand.useAnonymousAuth(response => {
       dispatch(resolve(response.data));
     });
@@ -62,6 +63,12 @@ export const socialSigninWithToken = (provider, token) => {
 
 export const signup = (email, password, confirmPassword, firstName, lastName, parameters) => {
   return dispatch => {
+    if (!backand.defaults.runSigninAfterSignup) {
+        throw new Error(`runSigninAfterSignup is false but you wish to make changes to the store.
+          For the sake of maintaining the consistent of your store, either
+          Change runSigninAfterSignup to true, or
+          use the function as is from the "vanillabknd-sdk"`);
+    }
     dispatch(request());
     backand.signup(email, password, confirmPassword, firstName, lastName, parameters,
       response => {
@@ -75,8 +82,9 @@ export const signup = (email, password, confirmPassword, firstName, lastName, pa
 
 export const signout = () => {
   return dispatch => {
+    dispatch(request());
     backand.signout(response => {
-      dispatch({type: SIGNOUT});
+      dispatch({ type: SIGNOUT });
     });
   };
 }
