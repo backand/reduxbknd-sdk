@@ -33,8 +33,9 @@ combineReducers({
 })
 ```
 - For the middleware (thunk/saga) you are using, follow the corresponding instructions:
+
 ### [redux-thunk](https://github.com/gaearon/redux-thunk)
-- Download [redux-thunk](https://github.com/gaearon/redux-thunk) and include it in [createStore()](http://redux.js.org/docs/api/createStore.html):
+Download [redux-thunk](https://github.com/gaearon/redux-thunk) and include it in [createStore()](http://redux.js.org/docs/api/createStore.html):
 ```javascript
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
@@ -42,7 +43,7 @@ import thunk from 'redux-thunk'
 createStore(rootReducer, initialState, applyMiddleware(thunk))
 ```
 ### [redux-saga](https://github.com/redux-saga/redux-saga)
-- Download [redux-saga](https://github.com/redux-saga/redux-saga) and include it in [createStore()](http://redux.js.org/docs/api/createStore.html):
+Download [redux-saga](https://github.com/redux-saga/redux-saga) and include it in [createStore()](http://redux.js.org/docs/api/createStore.html):
 ```javascript
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
