@@ -1,7 +1,20 @@
 import backand from 'vanillabknd-sdk'
-import { take, takeEvery, call, put, select, fork, cancel } from 'redux-saga/effects'
+import { take, takeEvery, takeLatest, put, call, fork, select, cancel, cancelled } from 'redux-saga/effects'
 
-// objectSagas
+// add custom sagas here!
+
+// generated sagas
+export default function* rootSaga() {
+  // register custom sagas for run() here!
+  // Add the following line to the array below:
+  // fork(CUSTOM_SAGA),
+  yield [
+    fork(objectRootSaga),
+    fork(userRootSaga),
+  ];
+}
+
+// object sagas
 function* getSaga ({ payload }) {
   var upname = payload.name.toUpperCase();
   yield put({ type: `${upname}_REQUEST` })
@@ -10,7 +23,7 @@ function* getSaga ({ payload }) {
     yield put({
       type: `${upname}_RESOLVE`,
       payload: {
-        data: response.data.data
+        data: response.data
       }
     })
   } catch (error) {
@@ -90,10 +103,67 @@ function* removeSaga ({ payload }) {
 }
 
 export function* objectRootSaga() {
-    yield [
-        fork(takeEvery, 'SAGA_GET_REQUEST'   , getSaga),
-        fork(takeEvery, 'SAGA_CREATE_REQUEST', createSaga),
-        fork(takeEvery, 'SAGA_UPDATE_REQUEST', updateSaga),
-        fork(takeEvery, 'SAGA_REMOVE_REQUEST', removeSaga)
-    ];
+  yield [
+    fork(takeEvery, 'SAGA_GET_REQUEST'   , getSaga),
+    fork(takeEvery, 'SAGA_CREATE_REQUEST', createSaga),
+    fork(takeEvery, 'SAGA_UPDATE_REQUEST', updateSaga),
+    fork(takeEvery, 'SAGA_REMOVE_REQUEST', removeSaga)
+  ];
+}
+
+// user sagas
+function* authorizeSaga ({ payload }) {
+  yield put(request())
+  try {
+    let fn = backand[payload.fn] || backand.user[payload.fn]
+    let response = yield call(fn, ...payload.args)
+    yield put(resolve(response.data))
+  } catch(error) {
+    yield put(reject(error.data))
+  } finally {
+    if (yield cancelled()) { }
+  }
+}
+
+function* signoutSaga () {
+  yield put(request())
+  let response = yield call(backand.signout)
+  yield put({ type: 'SIGNOUT' })
+}
+
+export function* userRootSaga () {
+  while (true) {
+    let action = yield take('SAGA_SIGNIN_REQUEST')
+    const task = yield fork(authorizeSaga, action)
+    action = yield take(['SAGA_SIGNOUT', 'SIGNIN_REJECT'])
+    if (action.type === 'SIGNIN_REJECT') {
+      continue;
+    }
+    if (action.type === 'SAGA_SIGNOUT') {
+      yield fork(signoutSaga)
+      yield cancel(task)
+    }
+  }
+}
+
+const request = () => {
+  return {
+    type: 'SIGNIN_REQUEST',
+  }
+}
+const resolve = (data) => {
+  return {
+    type: 'SIGNIN_RESOLVE',
+    payload: {
+      data
+    }
+  }
+}
+const reject = (error) => {
+  return {
+    type: 'SIGNIN_REJECT',
+    payload: {
+      error
+    }
+  }
 }

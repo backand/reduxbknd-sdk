@@ -15,7 +15,7 @@ program
   .usage('obj1[ obj2[ obj3[ ...]]] [options]')
   .option('-d, --dir [path]', 'specify the directory to save the generated files [process.cwd()]', process.cwd())
   .option('-o, --override', 'override objects if already exists in directory [false]')
-  .option('-m, --middleware [middleware]', 'the redux middleware to generate for (thunk|saga) [thunk]', /^(thunk|saga)$/i, 'thunk')
+  .option('-m, --middleware [middleware]', 'the redux middleware to generate for (thunk/saga) [thunk]', /^(thunk|saga)$/i, 'thunk')
 
 program._name = 'reduxbknd'
 program.parse(process.argv);

@@ -15,7 +15,7 @@ export const get${camel} = (params = {}) => {
   return {
     type: 'SAGA_GET_REQUEST',
     payload: {
-      name,
+      name: '${name}',
       args: [
         params,
       ],
@@ -27,7 +27,7 @@ export const create${camel} = (data, params = {}) => {
   return {
     type: 'SAGA_CREATE_REQUEST',
     payload: {
-      name,
+      name: '${name}',
       args: [
         data,
         params,
@@ -40,7 +40,7 @@ export const update${camel} = (id, data, params = {}) => {
   return {
     type: 'SAGA_UPDATE_REQUEST',
     payload: {
-      name,
+      name: '${name}',
       args: [
         id,
         data,
@@ -54,7 +54,7 @@ export const remove${camel} = (id) => {
   return {
     type: 'SAGA_REMOVE_REQUEST',
     payload: {
-      name,
+      name: '${name}',
       args: [
         id,
       ],

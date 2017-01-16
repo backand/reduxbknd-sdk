@@ -1,40 +1,9 @@
 import { SIGNIN_REQUEST, SIGNIN_RESOLVE, SIGNIN_REJECT, SIGNOUT } from './userTypes'
 import backand from 'vanillabknd-sdk'
-import { take, put, call, fork, cancel, cancelled } from 'redux-saga/effects'
 
-// userSagas
-function* authorizeSaga ({ payload }) {
-  yield put(request())
-  try {
-    let response = yield call(backand[payload.fn], ...payload.args)
-    yield put(resolve(response.data))
-  } catch(error) {
-    yield put(reject(error.data))
-  } finally {
-    if (yield cancelled()) { }
-  }
-}
+// add custom actions here!
 
-function* signoutSaga () {
-  yield put(request())
-  let response = yield call(backand.signout)
-  yield put({ type: SIGNOUT })
-}
-
-export function* userRootSaga () {
-  while (true) {
-    let action = yield take('SAGA_SIGNIN_REQUEST')
-    // fork return a Task object
-    const task = yield fork(authorizeSaga, action)
-    action = yield take(['SAGA_SIGNOUT', SIGNIN_REJECT])
-    yield fork(signoutSaga)
-    if (action.type === 'SAGA_SIGNOUT') {
-      yield cancel(task)
-    }
-  }
-}
-
-// actions
+// generated actions
 export const getUserDetails = (force) => {
   return toSaga({
     fn: 'getUserDetails',
@@ -106,31 +75,9 @@ export const signout = () => {
   }
 }
 
-
 const toSaga = (payload) => {
   return {
     type: 'SAGA_SIGNIN_REQUEST',
     payload,
-  }
-}
-const request = () => {
-  return {
-    type: SIGNIN_REQUEST,
-  }
-}
-const resolve = (data) => {
-  return {
-    type: SIGNIN_RESOLVE,
-    payload: {
-      data
-    }
-  }
-}
-const reject = (error) => {
-  return {
-    type: SIGNIN_REJECT,
-    payload: {
-      error
-    }
   }
 }
