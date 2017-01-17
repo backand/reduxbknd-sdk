@@ -4,21 +4,26 @@ import backand from 'vanillabknd-sdk'
 export const getUserDetails = (force) => {
   return dispatch => {
     dispatch(request());
-    backand.user.getUserDetails(response => {
-      dispatch(resolve(response.data));
-    },
-    error => {
-      dispatch(reject(error.data));
-    }, force);
+    backand.user.getUserDetails(force,
+      response => {
+        dispatch(resolve(response.data));
+      },
+      error => {
+        dispatch(reject(error.data));
+      });
   };
 }
 
 export const useAnonymousAuth = () => {
   return dispatch => {
     dispatch(request());
-    backand.useAnonymousAuth(response => {
-      dispatch(resolve(response.data));
-    });
+    backand.useAnonymousAuth(
+      response => {
+        dispatch(resolve(response.data));
+      },
+      error => {
+        dispatch(reject(error.data));
+      });
   };
 }
 
@@ -70,7 +75,7 @@ export const signup = (email, password, confirmPassword, firstName, lastName, pa
           use the function as is from the "vanillabknd-sdk"`);
     }
     dispatch(request());
-    backand.signup(email, password, confirmPassword, firstName, lastName, parameters,
+    backand.signup(firstName, lastName, email, password, confirmPassword, parameters,
       response => {
         dispatch(resolve(response.data));
       },

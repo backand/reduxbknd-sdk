@@ -15,8 +15,8 @@ $ npm i -S reduxbknd-sdk
 ```
 - Use `reduxbknd` to generate `Types`,`Actions`,`Reducers` for your Backand objects:
 ```bash
-$ ./node_modules/.bin/reduxbknd --help
-$ ./node_modules/.bin/reduxbknd user obj1 obj2 obj3... -m (thunk/saga)
+$ "./node_modules/.bin/reduxbknd" --help
+$ "./node_modules/.bin/reduxbknd" user obj1 obj2 obj3... -m (thunk/saga)
 ```  
 ***note:*** user is a unique object. It has a different `Reducer` and `Types`, and it reveals most of the authentication `Actions` (getUserDetails, signin, signout...).
 - Include `Reducers` in [combineReducers()](http://redux.js.org/docs/api/combineReducers.html):

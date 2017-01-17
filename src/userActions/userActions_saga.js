@@ -49,7 +49,7 @@ export const socialSigninWithToken = (provider, token) => {
   })
 }
 
-export const signup = (email, password, confirmPassword, firstName, lastName, parameters) => {
+export const signup = (firstName, lastName, email, password, confirmPassword, parameters) => {
   if (!backand.defaults.runSigninAfterSignup) {
       throw new Error(`runSigninAfterSignup is false but you wish to make changes to the store.
         For the sake of maintaining the consistent of your store, either
@@ -59,11 +59,11 @@ export const signup = (email, password, confirmPassword, firstName, lastName, pa
   return toSaga({
     fn: 'signup',
     args: [
+      firstName,
+      lastName,
       email,
       password,
       confirmPassword,
-      firstName,
-      lastName,
       parameters,
     ],
   })
