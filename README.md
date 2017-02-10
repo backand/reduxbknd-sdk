@@ -1,5 +1,7 @@
 reduxbknd-sdk
 ===
+###**NOTE - This SDK is deprecated, please use our new SDK at https://github.com/backand/vanilla-sdk**
+
 [![npm version](https://img.shields.io/npm/v/reduxbknd-sdk.svg?style=flat-square)](https://www.npmjs.org/package/reduxbknd-sdk)
 [![npm downloads](https://img.shields.io/npm/dt/reduxbknd-sdk.svg?style=flat-square)](http://npm-stat.com/charts.html?package=reduxbknd-sdk)
 
